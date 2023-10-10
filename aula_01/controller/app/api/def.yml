@@ -1,0 +1,62 @@
+### PALANTIR Project (PM-MT/SESP, Fapemat and UFMT)
+###
+### YAML API specification document.
+###
+### __auth__="Robson da Silva Lopes"
+### __date__="dd/04/2021"
+### ver: 0.1
+
+openapi: "3.0.3"
+
+info:
+  title: Assinador de Planos de estudos UFMT
+  description: >
+    Oferece uma única interface para a baixar arquivos PDFs e assinar digitalmente
+  version: "1.0"
+
+servers:
+  - url: http://localhost:8080/v1
+
+paths:
+  /operacao:
+    post:
+      description: Realiza uma operacao matematica
+      operationId: controller.operacao
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                operador:
+                  type: string
+                  description: "Define qual será o operador. Ex. + - * /"
+                operando1:
+                  type: integer
+                  description: "Define o primeiro operado"
+                operando2:
+                  type: integer
+                  description: "Define o segundo operado"
+      responses:
+        "200":
+          description: Calculo da operacao realizada com sucesso
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  operacao:
+                    type: string
+                  resultado:
+                    type: string
+        "400":
+          description: >
+            Requisição mal formatada. Por exemplo, ausência, na requisição, de algum 
+            parâmetro obrigatório
+        "401":
+          description: Informação de autorização é inválida ou ausente.
+        "404":
+          description: Erro interno.
+        "5XX":
+          description: Erro inesperado.
+  

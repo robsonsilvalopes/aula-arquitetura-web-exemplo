@@ -1,0 +1,9 @@
+Werkzeug==2.2.2
+flask==2.1.2
+Flask-Cors==3.0.10
+rq==1.8.0
+connexion
+connexion[swagger-ui]
+requests
+
+
