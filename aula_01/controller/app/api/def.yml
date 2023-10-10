@@ -1,11 +1,3 @@
-### PALANTIR Project (PM-MT/SESP, Fapemat and UFMT)
-###
-### YAML API specification document.
-###
-### __auth__="Robson da Silva Lopes"
-### __date__="dd/04/2021"
-### ver: 0.1
-
 openapi: "3.0.3"
 
 info:
