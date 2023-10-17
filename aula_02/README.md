@@ -1,5 +1,7 @@
-# Assinador Digital de Planos de estudos
+# Aula 02
 
-Sistema que busca os planos de ensino de um dado curso da UFMT, por ano e semestre, gera o PDF e assina digitalmente com um certificado gerado pelo ICEPedu, formato pk12.
+carregando containers docker com ngix, um servidor de api em python que utiza a biblioteca connexion, descrição da API em swagger.
+Além disto, foi adicionado o redis
 
-Para acessar: http://0.0.0.0:8000/framework/index.php?class=PlanoEnsino
+
+Para acessar: http://0.0.0.0:8080/v1/ui
