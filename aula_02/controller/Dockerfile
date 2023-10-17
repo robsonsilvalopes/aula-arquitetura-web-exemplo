@@ -1,3 +1,11 @@
+### PALANTIR Project (PM-MT/SESP, Fapemat and UFMT)
+###
+### Docker file to CONTROLLER module.
+###
+### __auth__="Maxweel Carmo"
+### __date__="dd/04/2021"
+### ver: 0.1
+
 #FROM python:3.8-slim
 FROM python:3.9
 ENV APP_HOME /code
