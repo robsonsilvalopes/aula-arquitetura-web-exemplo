@@ -57,7 +57,7 @@ def executa():
         'operando1' : request.form['operando1'],
         'operando2' : request.form['operando2'],
         'operador' : request.form['operador']        
-        }
+    }
     
     q = Queue('math',connection=redis_conn)
     job = q.enqueue('main.operacao', kwargs=params)
