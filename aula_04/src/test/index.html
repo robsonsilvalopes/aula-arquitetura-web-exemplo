@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Formulário AJAX</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <h1>Formulário AJAX</h1>
+        <form id="meuForm">
+            <label for="operador">Operador:</label>
+            <input type="text" id="operador" name="operador" required><br>
+
+            <label for="operando1">Operando 1:</label>
+            <input type="text" id="operando1" name="operando1" required><br>
+
+            <label for="operando2">Operando 2:</label>
+            <input type="text" id="operando2" name="operando2" required><br>
+
+            <input type="button" value="Enviar" id="enviarButton">
+        </form>
+
+        <div id="resultado"></div>
+        <div id="resposta"></div>
+
+        <script>
+        $(document).ready(function() {
+            
+            $("#enviarButton").click(function() {
+                var operador = $("#operador").val();
+                var operando1 = $("#operando1").val();
+                var operando2 = $("#operando2").val();
+
+                // Criar um objeto com os dados a serem enviados
+                var data = {
+                    operador: operador,
+                    operando1:operando1,
+                    operando2:operando2
+                };
+
+                // Enviar os dados para o servidor via AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "http://0.0.0.0:8080/v1/executa", // Substitua "seu_servidor.php" pelo URL do seu servidor
+                    data: data,
+                    success: function(response) {
+                        $("#resultado").html(response['job_id']);
+                        
+                        // Inicie a primeira verificação
+                        checkstatus();
+                    },
+                    error: function() {
+                        $("#resultado").html("Erro ao enviar os dados para o servidor.");
+                    }
+                });
+            });
+        
+
+                function checkstatus() {
+                    $.ajax({
+                        url: "http://0.0.0.0:8080/v1/check_status?job_id="+$("#resultado").text(), // Substitua "sua_api_url_aqui" pela URL da API do serviço
+                        method: "GET", // Ou use "POST" se necessário
+                        dataType: "json", // Defina o tipo de dados de resposta, dependendo do formato da resposta da API
+                        success: function(data) {
+                    
+                            console.log("Verificando status");
+
+                            // Verifique se o status atual é diferente do status anterior
+                            if (data['job_status'] == 'finished') {
+                                console.log("Job id " + data['job_id'] + " job_status " + data['job_status']);
+                                getResult();
+                            }
+                        },
+                        error: function() {
+                            console.error("Erro na chamada da API");
+                        },
+                        complete: function(data) {
+                            console.log(data);
+                            if(data['job_status'] != 'finished'){
+                                // Agendar a próxima verificação após um período de tempo (por exemplo, 10 segundos)
+                                console.log("Verificando...")
+                                setTimeout(checkstatus, 10000); // 10 segundos em milissegundos (10000ms)
+                            }
+                        }
+                    });
+                }
+
+                function getResult(){
+
+                    $.ajax({
+                        url: "http://0.0.0.0:8080/v1/get_result/"+$("#resultado").text(), // Substitua "sua_api_url_aqui" pela URL da API do serviço
+                        method: "GET", // Ou use "POST" se necessário
+                        dataType: "json", // Defina o tipo de dados de resposta, dependendo do formato da resposta da API
+                        success: function(response) {
+                            $("#resposta").html(response['resultado']);
+                        },
+                        error: function() {
+                            console.error("Erro na chamada da API");
+                        }
+                        
+                    });
+
+                }
+
+        });
+    </script>
+    </body>
+</html>

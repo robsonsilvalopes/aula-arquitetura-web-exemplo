@@ -26,7 +26,7 @@ def operacao(operando1,operando2,operador):
         texto = str(operando1) + " - " + str(operando2)
         resultado = operando1 - operando2
 
-    time.sleep(60)
+    time.sleep(30)
 
     return {
         'operacao' : texto,

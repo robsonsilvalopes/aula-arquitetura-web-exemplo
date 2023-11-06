@@ -1,0 +1,111 @@
+openapi: "3.0.3"
+
+info:
+  title: Sistema exemplo que executa algumas operacao
+  description: >
+    Teste
+  version: "1.0"
+
+servers:
+  - url: http://localhost:8080/v1
+
+paths:
+  /get_result/{job_id}:
+    get:
+      description: Retorna o resultado 
+      operationId: controller.get_result
+      parameters:
+        - name: "job_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          required: true
+      responses:
+        #! TODO: implementar retorno das datas (start_date e end_date)
+        "200":
+          description: Arquivo Zip com planos de ensinos pdf assinados digitalmente
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                  operacao:
+                    type: string
+                  resultado:
+                    type: string
+        "400":
+          description: Requisição mal formatada. Por exemplo, ausência, na requisição, de algum parâmetro obrigatório
+        "401":
+          description: Informação de autorização é inválida ou ausente.
+        "404":
+          description: Job não encontrado na fila de trabalhos prontos.
+        "5XX":
+          description: Erro inesperado.
+  /check_status:
+    get:
+      description: Retorna o status de um trabalho prévio
+      operationId: controller.check_status
+      parameters:
+        - name: "job_id"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          #! TODO: implementar retorno das datas (start_date e end_date)
+          description: Job's status
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                  job_status:
+                    type: string
+        "400":
+          description: >
+            Requisição mal formatada. Por exemplo, ausência, na requisição, de algum 
+            parâmetro obrigatório
+        "401":
+          description: Informação de autorização é inválida ou ausente.
+        "404":
+          description: Erro interno.
+        "5XX":
+          description: Erro inesperado.
+  /executa:
+    post:
+      description: Realiza a operação desejada
+      operationId: controller.executa
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                operando1:
+                  type: integer
+                  description: "Operando 01"
+                operando2:
+                  type: integer
+                  description: "Operando 02"
+                operador:
+                  type: string
+                  description: "Operacao. Ex. + - *"                
+      responses:
+        "200":
+          description: >
+            Retorna o codigo do Job
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+        "400":
+          description: Requisição mal formatada. Por exemplo, ausência, na requisição, de algum parâmetro obrigatório
